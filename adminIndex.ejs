@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | ST.FITTER GYM</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+</head>
+
+<body>
+
+    <header class="admin-header">
+        <h1>ST.<span>FITTER</span> GYM</h1>
+
+        <form action="/adminLogout" method="POST" onsubmit="return confirm('Are you sure you want to log out?');">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </header>
+
+    <main class="admin-container">
+
+        <section>
+            <h2 class="section-title">Admin Dashboard</h2>
+
+            <div class="dashboard-links">
+                <a href="/adminAttendanceList" class="dashboard-link">
+                    Today's Attendance
+                    <span>View today's gym attendance</span>
+                </a>
+
+
+                <a href="/adminWalkinList" class="dashboard-link">
+                    Walk-in List
+                    <span>View walk-in registration records</span>
+                </a>
+
+                <a href="/adminRegularMemberList" class="dashboard-link">
+                    Regular Members
+                    <span>View registered gym members</span>
+                </a>
+
+                <a href="/adminOnlineRegistrations" class="dashboard-link">
+                    Online Registrations
+                    <span>Verify &amp; activate online membership signups</span>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Register Regular Member</h2>
+
+            <div class="form-card">
+                <form action="/register" method="POST">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="fn">First Name</label>
+                            <input type="text" id="fn" name="fn" placeholder="Enter first name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ln">Last Name</label>
+                            <input type="text" id="ln" name="ln" placeholder="Enter last name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" placeholder="Enter age" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Contact Number</label>
+                            <input type="text" id="contact" name="contact" placeholder="Enter contact number" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="avail_date">Available Date</label>
+                            <input type="date" id="avail_date" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="months_avail">Number of Months</label>
+                            <input type="number" id="months_avail" name="months_avail"
+                                placeholder="Enter number of months" min="1" step="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expire_date">Expiration Date</label>
+                            <input type="date" id="expire_date" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total_payment">
+                                Total Payment (₱500/month)
+                            </label>
+                            <input type="text" id="total_payment" readonly placeholder="Automatically calculated">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment_status">Payment Status</label>
+                            <select id="payment_status" name="payment_status" required>
+                                <option value="Paid">Paid</option>
+                                <option value="Unpaid">Unpaid</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment_method">Payment Method</label>
+                            <select id="payment_method" name="payment_method" required>
+                                <option value="Cash">Cash</option>
+                                <option value="GCash">GCash</option>
+                                <option value="Maya">Maya</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <p class="form-note">
+                        The expiration date and total payment are calculated automatically.
+                    </p>
+
+                    <button type="submit" class="submit-btn">
+                        Register Member
+                    </button>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const months = document.getElementById('months_avail');
+        const availDate = document.getElementById('avail_date');
+        const expireDate = document.getElementById('expire_date');
+        const totalPayment = document.getElementById('total_payment');
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            return year + '-' + month + '-' + day;
+        }
+
+        function calculateMembership() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            availDate.value = formatDate(today);
+
+            const numberOfMonths = Number(months.value);
+
+            if (
+                months.value !== '' &&
+                Number.isInteger(numberOfMonths) &&
+                numberOfMonths >= 1
+            ) {
+                const expiry = new Date(today);
+                const originalDay = expiry.getDate();
+
+                expiry.setDate(1);
+                expiry.setMonth(expiry.getMonth() + numberOfMonths);
+
+                const lastDay = new Date(
+                    expiry.getFullYear(),
+                    expiry.getMonth() + 1,
+                    0
+                ).getDate();
+
+                expiry.setDate(Math.min(originalDay, lastDay));
+
+                expireDate.value = formatDate(expiry);
+                totalPayment.value = (500 * numberOfMonths).toFixed(2);
+            } else {
+                expireDate.value = '';
+                totalPayment.value = '';
+            }
+        }
+
+        months.addEventListener('input', calculateMembership);
+        calculateMembership();
+    </script>
+
+</body>
+
+</html>

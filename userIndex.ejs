@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Index</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #1a1a1a;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ========================================
+   LOGIN PAGE
+======================================== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background:
+                radial-gradient(circle at top right, rgba(230, 57, 70, 0.12), transparent 35%),
+                #1a1a1a;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: #232323;
+            border: 1px solid #353535;
+            border-top: 4px solid #e63946;
+            border-radius: 6px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-brand h1 {
+            color: #fff;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .login-brand h1 span {
+            color: #e63946;
+        }
+
+        .login-brand p {
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 7px;
+        }
+
+        /* ========================================
+   MEMBERSHIP BUTTONS
+======================================== */
+        .membership-options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .membership-options a {
+            text-decoration: none;
+        }
+
+        .membership-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            padding: 14px 18px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-left: 3px solid #e63946;
+            border-radius: 3px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            text-align: left;
+        }
+
+        .membership-btn span {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .membership-btn:hover {
+            background: #2b2022;
+            border-color: #e63946;
+            border-left-color: #e63946;
+            transform: translateY(-1px);
+        }
+
+        /* Online membership — highlighted to draw attention */
+        .membership-btn.online {
+            background: rgba(230, 57, 70, 0.08);
+            border: 1px solid #e63946;
+            border-left: 3px solid #e63946;
+        }
+
+        .membership-btn.online span {
+            color: #c9a0a4;
+        }
+
+        .membership-btn.online:hover {
+            background: #e63946;
+            border-color: #e63946;
+            color: #ffffff;
+        }
+
+        .membership-btn.online:hover span {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Small "NEW" badge */
+        .membership-btn.online .badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 7px;
+            background: #e63946;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            vertical-align: middle;
+        }
+
+        .membership-btn.online:hover .badge {
+            background: #fff;
+            color: #e63946;
+        }
+
+        /* Admin — quieter ghost style, fills red on hover */
+        .membership-btn.admin {
+            background: transparent;
+            border: 1px solid #4a2a2e;
+            border-left: 3px solid #4a2a2e;
+            color: #ff858b;
+        }
+
+        .membership-btn.admin span {
+            color: #a8666b;
+        }
+
+        .membership-btn.admin:hover {
+            background: #e63946;
+            border-color: #e63946;
+            color: #ffffff;
+        }
+
+        .membership-btn.admin:hover span {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Divider before admin */
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0 18px;
+            color: #666;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #353535;
+        }
+
+        /* Footer back link */
+        .login-back {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .login-back:hover {
+            color: #e63946;
+        }
+
+        /* ========================================
+   MOBILE
+======================================== */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            .login-brand h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-page">
+        <div class="login-card">
+
+            <div class="login-brand">
+                <h1>ST.<span>FITTER</span></h1>
+                <p>Choose Membership Type</p>
+            </div>
+
+            <div class="membership-options">
+
+                <a href="/walkin">
+                    <button type="button" class="membership-btn">
+                        Walk-in
+                        <span>Quick entry without membership</span>
+                    </button>
+                </a>
+
+                <a href="/membership/register">
+                    <button type="button" class="membership-btn online">
+                        Join Membership Online
+                        <span class="badge">NEW</span>
+                        <span>Register and pay online — skip the line</span>
+                    </button>
+                </a>
+
+                <a href="/regular">
+                    <button type="button" class="membership-btn">
+                        Regular Member
+                        <span>Access with an active membership</span>
+                    </button>
+                </a>
+
+            </div>
+
+            <div class="login-divider">or</div>
+
+            <div class="membership-options">
+                <a href="/adminLogin">
+                    <button type="button" class="membership-btn admin">
+                        Admin Login
+                        <span>Staff &amp; management access</span>
+                    </button>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

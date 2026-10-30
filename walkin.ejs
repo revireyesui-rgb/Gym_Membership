@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walk-in Registration | ST.FITTER GYM</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+    <style>
+        /* ========================================
+           BASE
+        ======================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(230, 57, 70, 0.12), transparent 35%),
+                #1a1a1a;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        /* ========================================
+           CARD
+        ======================================== */
+        .walkin-card {
+            width: 100%;
+            max-width: 460px;
+            background: #232323;
+            border: 1px solid #353535;
+            border-top: 4px solid #e63946;
+            border-radius: 6px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .walkin-brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .walkin-brand h1 {
+            color: #fff;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .walkin-brand h1 span {
+            color: #e63946;
+        }
+
+        .walkin-brand p {
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 7px;
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 0 0 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #353535;
+        }
+
+        /* ========================================
+           INFO NOTICE
+        ======================================== */
+        .info-notice {
+            background: rgba(230, 57, 70, 0.08);
+            border-left: 3px solid #e63946;
+            border-radius: 3px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-notice p {
+            margin: 0 0 6px;
+            font-size: 13px;
+            color: #e8e8e8;
+            line-height: 1.5;
+        }
+
+        .info-notice p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-notice strong {
+            color: #ffffff;
+        }
+
+        .info-notice .highlight {
+            color: #ff6b74;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           FORM
+        ======================================== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #f0f0f0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-radius: 3px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+        }
+
+        /* Two-column row for first/last name */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ========================================
+           PAYMENT METHOD
+        ======================================== */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .payment-option {
+            position: relative;
+        }
+
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .payment-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-radius: 3px;
+            color: #cfcfcf;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+
+        .payment-option input[type="radio"]:hover+label {
+            border-color: #555;
+            color: #fff;
+        }
+
+        .payment-option input[type="radio"]:checked+label {
+            background: rgba(230, 57, 70, 0.12);
+            border-color: #e63946;
+            color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.15);
+        }
+
+        .payment-option input[type="radio"]:focus-visible+label {
+            outline: 2px solid #ff858b;
+            outline-offset: 2px;
+        }
+
+        .payment-hint {
+            display: block;
+            margin-top: 8px;
+            color: #777;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========================================
+           SUBMIT BUTTON
+        ======================================== */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px 20px;
+            background: #e63946;
+            color: #ffffff;
+            border: 1px solid #e63946;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #c92f3b;
+            border-color: #c92f3b;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(230, 57, 70, 0.25);
+        }
+
+        .submit-btn:focus-visible {
+            outline: 2px solid #ff858b;
+            outline-offset: 2px;
+        }
+
+        /* ========================================
+           BACK LINK
+        ======================================== */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #e63946;
+        }
+
+        /* ========================================
+           MOBILE
+        ======================================== */
+        @media (max-width: 480px) {
+            .walkin-card {
+                padding: 25px 20px;
+            }
+
+            .walkin-brand h1 {
+                font-size: 23px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+   QR CODE PANEL
+======================================== */
+        .qr-panel {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: #1a1a1a;
+            border: 1px dashed #e63946;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .qr-panel.visible {
+            display: block;
+        }
+
+        .qr-panel .qr-title {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+        }
+
+        .qr-panel img {
+            width: 180px;
+            height: 180px;
+            max-width: 100%;
+            background: #fff;
+            border-radius: 4px;
+            padding: 6px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .qr-panel .qr-note {
+            display: block;
+            margin-top: 10px;
+            color: #999;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .qr-panel .qr-amount {
+            color: #ff6b74;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="walkin-card">
+
+        <div class="walkin-brand">
+            <h1>ST.<span>FITTER</span></h1>
+            <p>Gym Membership System</p>
+        </div>
+
+        <h2 class="card-title">Walk-in Registration</h2>
+
+        <div class="info-notice">
+            <p>The <strong>Regular payment per session</strong> is <span class="highlight">100 pesos</span>.</p>
+            <p><strong>Discover the membership</strong> for convenience.</p>
+        </div>
+
+        <form action="/walkin/register" method="POST">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fn">First Name</label>
+                    <input type="text" id="fn" name="fn" placeholder="Enter firstname" autocomplete="given-name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ln">Last Name</label>
+                    <input type="text" id="ln" name="ln" placeholder="Enter lastname" autocomplete="family-name"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" placeholder="Enter age" min="1" max="120" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">Contact Number</label>
+                <input type="text" id="contact" name="contact" placeholder="Enter contact number" inputmode="tel"
+                    autocomplete="tel" pattern="[0-9+\-\s()]{7,}"
+                    title="Enter a valid contact number (at least 7 digits)" required>
+            </div>
+
+            <!-- PAYMENT METHOD -->
+            <div class="form-group">
+                <label>Payment Method</label>
+
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <input type="radio" id="pay-cash" name="payment_method" value="Cash" required>
+                        <label for="pay-cash">💵 Cash</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="pay-gcash" name="payment_method" value="GCash">
+                        <label for="pay-gcash">📱 GCash</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="pay-maya" name="payment_method" value="Maya">
+                        <label for="pay-maya">💳 Maya</label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" id="pay-bank" name="payment_method" value="GoTyme Bank">
+                        <label for="pay-bank">🏦 GoTyme Bank</label>
+                    </div>
+                </div>
+
+                <!-- QR CODE FOR ONLINE PAYMENT (outside the grid) -->
+                <div class="qr-panel" id="qrPanel">
+                    <p class="qr-title" id="qrTitle">Scan to Pay</p>
+                    <img id="qrImage" src="" alt="Payment QR code">
+                    <span class="qr-note">
+                        Scan this QR code using your <strong id="qrAppName">e-wallet</strong> app
+                        and pay <span class="qr-amount">₱100.00</span>.
+                        Show the confirmation to the staff.
+                    </span>
+                </div>
+
+                <span class="payment-hint">Payment is collected on-site upon registration.</span>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Register Walk-in
+            </button>
+
+        </form>
+
+        <a href="/userIndex" class="back-link">← Back to Home</a>
+
+    </div>
+    <script>
+        (function () {
+            var QR_CODES = {
+                'GCash': { image: '/images/qr-gcash.jpg', app: 'GCash' },
+                'Maya': { image: '/images/qr-gcash.jpg', app: 'Maya' },
+                'GoTyme Bank': { image: '/images/qr-bank.jpg', app: 'GoTyme Bank' }
+            };
+
+            var radios = document.querySelectorAll('input[name="payment_method"]');
+            var panel = document.getElementById('qrPanel');
+            var qrImage = document.getElementById('qrImage');
+            var qrTitle = document.getElementById('qrTitle');
+            var qrApp = document.getElementById('qrAppName');
+
+            function updateQrPanel() {
+                var selected = document.querySelector('input[name="payment_method"]:checked');
+                var method = selected ? selected.value : '';
+
+                if (!method || method === 'Cash' || !QR_CODES[method]) {
+                    panel.classList.remove('visible');
+                    qrImage.src = '';
+                    return;
+                }
+
+                var info = QR_CODES[method];
+                qrImage.src = info.image;
+                qrImage.alt = info.app + ' payment QR code';
+                qrTitle.textContent = 'Scan to Pay via ' + info.app;
+                qrApp.textContent = info.app;
+                panel.classList.add('visible');
+            }
+
+            radios.forEach(function (radio) {
+                radio.addEventListener('change', updateQrPanel);
+            });
+
+            updateQrPanel();
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Member | ST.FITTER GYM</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+
+    <style>
+        /* ========================================
+           BASE
+        ======================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: #141414;
+            color: #e8e8ea;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========================================
+           PAGE SHELL
+           ======================================== */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -20%, rgba(230, 57, 70, 0.10), transparent),
+                #141414;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 32px;
+            border-bottom: 1px solid #262626;
+            background: #1a1a1a;
+            flex-shrink: 0;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
+
+        .topbar-brand span {
+            color: #e63946;
+        }
+
+        .topbar-sub {
+            color: #6b6b70;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-left: 14px;
+            padding-left: 14px;
+            border-left: 1px solid #2e2e2e;
+        }
+
+        .topbar-back {
+            color: #9a9aa0;
+            text-decoration: none;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .topbar-back:hover {
+            color: #e63946;
+        }
+
+        /* ========================================
+           MAIN LAYOUT
+           ======================================== */
+        .main {
+            flex: 1;
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+
+        .page-heading h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .page-heading p {
+            font-size: 14px;
+            color: #8a8a90;
+            margin: 0;
+        }
+
+        .page-heading .member-tag {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: rgba(230, 57, 70, 0.12);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            color: #ff858b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            vertical-align: middle;
+        }
+
+        /* ========================================
+           PANEL
+           ======================================== */
+        .panel {
+            background: #1c1c1e;
+            border: 1px solid #2a2a2d;
+            border-radius: 10px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .panel-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid #2a2a2d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-head h2 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #d4d4d8;
+            margin: 0;
+        }
+
+        .panel-head::before {
+            content: "";
+            width: 3px;
+            height: 16px;
+            background: #e63946;
+            border-radius: 2px;
+        }
+
+        .panel-body {
+            padding: 26px 22px;
+        }
+
+        /* ========================================
+           FORM
+           ======================================== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #a1a1a6;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            background: #141414;
+            border: 1px solid #323236;
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .form-group input::placeholder {
+            color: #5a5a60;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #3f3f44;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+        }
+
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238a8a90' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 38px;
+            cursor: pointer;
+        }
+
+        /* Read-only ID field */
+        .form-group input[readonly] {
+            background: #202022;
+            color: #b0b0b6;
+            border-color: #2a2a2d;
+            cursor: not-allowed;
+        }
+
+        /* ========================================
+           ACTIONS
+           ======================================== */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 26px;
+            padding-top: 22px;
+            border-top: 1px solid #2a2a2d;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 24px;
+            border: 1px solid #e63946;
+            border-radius: 6px;
+            background: #e63946;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .btn:hover {
+            background: #cf2f3c;
+            border-color: #cf2f3c;
+            box-shadow: 0 4px 16px rgba(230, 57, 70, 0.28);
+        }
+
+        .btn:active {
+            background: #b82835;
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid #ff858b;
+            outline-offset: 2px;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            border-color: #323236;
+            color: #d4d4d8;
+        }
+
+        .btn.secondary:hover {
+            background: #222225;
+            border-color: #3f3f44;
+            box-shadow: none;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 14px 20px;
+            }
+
+            .topbar-sub {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="topbar-brand">
+                ST.<span>FITTER</span>
+                <span class="topbar-sub">Update Member</span>
+            </div>
+            <a href="/adminRegularMemberList" class="topbar-back">← Back to List</a>
+        </header>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <div class="page-heading">
+                <h1>
+                    Update Member
+                    <span class="member-tag">ID <%= data.id %></span>
+                </h1>
+                <p>Edit the member's details below, then save your changes.</p>
+            </div>
+
+            <section class="panel">
+                <div class="panel-head">
+                    <h2>Member Details</h2>
+                </div>
+
+                <div class="panel-body">
+                    <form action="/update/<%= data.id %>" method="POST">
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label class="field-label" for="fn">First Name</label>
+                                <input type="text" id="fn" name="fn" value="<%= data.firstname %>"
+                                    placeholder="Firstname" autocomplete="given-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="field-label" for="ln">Last Name</label>
+                                <input type="text" id="ln" name="ln" value="<%= data.lastname %>" placeholder="Lastname"
+                                    autocomplete="family-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="field-label" for="age">Age</label>
+                                <input type="number" id="age" name="age" value="<%= data.age %>" placeholder="Age"
+                                    min="1" max="120" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="field-label" for="contact">Contact</label>
+                                <input type="text" id="contact" name="contact" value="<%= data.contact || '' %>"
+                                    placeholder="Contact" inputmode="tel" autocomplete="tel">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="field-label" for="months_avail">Months Available</label>
+                                <input type="number" id="months_avail" name="months_avail"
+                                    value="<%= data.months_avail %>" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="field-label" for="payment_status">Payment Status</label>
+                                <select id="payment_status" name="payment_status" required>
+                                    <option value="Paid" <%=data.payment_status==='Paid' ? 'selected' : '' %>>
+                                        Paid
+                                    </option>
+                                    <option value="Unpaid" <%=data.payment_status==='Unpaid' ? 'selected' : '' %>>
+                                        Unpaid
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Save Changes</button>
+                            <a href="/adminRegularMemberList" class="btn secondary">Cancel</a>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

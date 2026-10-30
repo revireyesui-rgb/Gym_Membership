@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | ST.FITTER GYM</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+</head>
+
+<body>
+
+    <div class="login-page">
+        <div class="login-card">
+
+            <div class="login-brand">
+                <h1>ST.<span>FITTER</span></h1>
+                <p>Gym Membership System</p>
+            </div>
+
+            <h2 class="card-title">Admin Login</h2>
+
+            <% if (error) { %>
+                <div class="login-error">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/adminLogin" method="POST">
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" placeholder="Enter your username"
+                                autocomplete="username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                autocomplete="current-password" required>
+                        </div>
+
+                        <button type="submit" class="btn login-submit">
+                            LOGIN
+                        </button>
+
+                    </form>
+
+                    <a href="/userIndex" class="login-back">
+                        ← BACK TO HOME
+                    </a>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

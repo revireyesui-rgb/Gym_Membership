@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Registrations | ST.FITTER GYM</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminwalkin.css">
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+</head>
+
+<body>
+
+    <header class="admin-header">
+        <h1>ST.<span>FITTER</span> GYM</h1>
+        <form action="/adminLogout" method="POST" onsubmit="return confirm('Are you sure you want to log out?');">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </header>
+
+    <main class="admin-container">
+
+        <section>
+            <h2 class="section-title">Admin Dashboard</h2>
+            <div class="dashboard-links">
+                <a href="/adminAttendanceList" class="dashboard-link">
+                    Today's Attendance
+                    <span>View today's gym attendance</span>
+                </a>
+                <a href="/adminWalkinList" class="dashboard-link">
+                    Walk-in List
+                    <span>View walk-in registration records</span>
+                </a>
+                <a href="/adminRegularMemberList" class="dashboard-link">
+                    Regular Members
+                    <span>View registered gym members</span>
+                </a>
+                <a href="/adminOnlineRegistrations" class="dashboard-link active">
+                    Online Registrations
+                    <span>Verify &amp; activate online membership signups</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="attendance-heading">
+            <div>
+                <h2>Online Registrations</h2>
+                <p>Verify payment and activate memberships submitted online.</p>
+            </div>
+        </div>
+
+        <% if (typeof message !=='undefined' && message) { %>
+            <div
+                style="background:rgba(46,204,113,0.12);border-left:3px solid #2ecc71;padding:12px 16px;border-radius:3px;margin-bottom:18px;color:#a8e6c1;font-size:13px;">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <% if (typeof error !=='undefined' && error) { %>
+                    <div
+                        style="background:rgba(230,57,70,0.12);border-left:3px solid #e63946;padding:12px 16px;border-radius:3px;margin-bottom:18px;color:#ff9aa0;font-size:13px;">
+                        <strong>Error:</strong>
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <div class="attendance-table-wrapper">
+                            <table class="attendance-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Plan</th>
+                                        <th>Payment</th>
+                                        <th>Reference</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% var list=(typeof members !=='undefined' && members) ? members : []; %>
+                                        <% if (list.length> 0) { %>
+                                            <% list.forEach(function(m) { %>
+                                                <% m=m || {}; %>
+                                                    <% var payStatus=m.payment_status || 'Pending' ; %>
+                                                        <% var memStatus=m.member_status || 'Pending' ; %>
+                                                            <% var payColor=payStatus==='Paid' ? '#2ecc71' :
+                                                                (payStatus==='Failed' ? '#e63946' : '#ffcc00' ); %>
+                                                                <% var memColor=memStatus==='Active' ? '#2ecc71'
+                                                                    : '#ffcc00' ; %>
+                                                                    <tr>
+                                                                        <td data-label="ID">
+                                                                            <%= m.id !=null ? m.id : '' %>
+                                                                        </td>
+                                                                        <td data-label="Name">
+                                                                            <%= (m.firstname || '' ) + ' ' + (m.lastname
+                                                                                || '' ) %>
+                                                                        </td>
+                                                                        <td data-label="Contact">
+                                                                            <%= m.contact || '' %>
+                                                                        </td>
+                                                                        <td data-label="Email">
+                                                                            <%= m.email || '' %>
+                                                                        </td>
+                                                                        <td data-label="Plan">
+                                                                            <%= m.plan || '' %>
+                                                                        </td>
+                                                                        <td data-label="Payment">
+                                                                            <%= m.payment_method || '—' %>
+                                                                                <br>
+                                                                                <span
+                                                                                    style="font-size:11px;color:<%= payColor %>;">
+                                                                                    <%= payStatus %>
+                                                                                </span>
+                                                                        </td>
+                                                                        <td data-label="Reference">
+                                                                            <%= m.reference_no || '—' %>
+                                                                        </td>
+                                                                        <td data-label="Status">
+                                                                            <span
+                                                                                style="font-size:11px;color:<%= memColor %>;">
+                                                                                <%= memStatus %>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td data-label="Action">
+                                                                            <% if (memStatus !=='Active' ) { %>
+                                                                                <form
+                                                                                    action="/adminOnlineRegistrations/<%= m.id %>/activate"
+                                                                                    method="POST"
+                                                                                    style="display:inline;"
+                                                                                    onsubmit="return confirm('Activate this member?');">
+                                                                                    <button type="submit"
+                                                                                        style="background:#2ecc71;color:#fff;border:none;padding:6px 10px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">
+                                                                                        Activate
+                                                                                    </button>
+                                                                                </form>
+                                                                                <% } else { %>
+                                                                                    <span
+                                                                                        style="font-size:11px;color:#2ecc71;">✓
+                                                                                        Active</span>
+                                                                                    <% } %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% }); %>
+                                                                        <% } else { %>
+                                                                            <tr>
+                                                                                <td colspan="9"
+                                                                                    class="empty-attendance">No online
+                                                                                    registrations yet.</td>
+                                                                            </tr>
+                                                                            <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+    </main>
+</body>
+
+</html>

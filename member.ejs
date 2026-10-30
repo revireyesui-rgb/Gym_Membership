@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Search | ST.FITTER GYM</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+
+    <style>
+        /* ========================================
+           BASE
+           ======================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: #141414;
+            color: #e8e8ea;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========================================
+           PAGE SHELL
+           ======================================== */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -20%, rgba(230, 57, 70, 0.10), transparent),
+                #141414;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 32px;
+            border-bottom: 1px solid #262626;
+            background: #1a1a1a;
+            flex-shrink: 0;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
+
+        .topbar-brand span {
+            color: #e63946;
+        }
+
+        .topbar-sub {
+            color: #6b6b70;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-left: 14px;
+            padding-left: 14px;
+            border-left: 1px solid #2e2e2e;
+        }
+
+        .topbar-back {
+            color: #9a9aa0;
+            text-decoration: none;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .topbar-back:hover {
+            color: #e63946;
+        }
+
+        /* ========================================
+           MAIN LAYOUT
+           ======================================== */
+        .main {
+            flex: 1;
+            width: 100%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+            flex-shrink: 0;
+        }
+
+        .page-heading h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .page-heading p {
+            font-size: 14px;
+            color: #8a8a90;
+            margin: 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .content-grid.has-result {
+            grid-template-columns: 380px 1fr;
+        }
+
+        /* ========================================
+           PANEL
+           ======================================== */
+        .panel {
+            background: #1c1c1e;
+            border: 1px solid #2a2a2d;
+            border-radius: 10px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .panel-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid #2a2a2d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-head h2 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #d4d4d8;
+            margin: 0;
+        }
+
+        .panel-head::before {
+            content: "";
+            width: 3px;
+            height: 16px;
+            background: #e63946;
+            border-radius: 2px;
+        }
+
+        .panel-body {
+            padding: 22px;
+        }
+
+        /* ========================================
+           SEARCH FORM
+           ======================================== */
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #a1a1a6;
+            margin-bottom: 8px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 11px 14px;
+            background: #141414;
+            border: 1px solid #323236;
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .search-row input::placeholder {
+            color: #5a5a60;
+        }
+
+        .search-row input:hover {
+            border-color: #3f3f44;
+        }
+
+        .search-row input:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+        }
+
+        /* ========================================
+           BUTTON
+           ======================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border: 1px solid #e63946;
+            border-radius: 6px;
+            background: #e63946;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .btn:hover {
+            background: #cf2f3c;
+            border-color: #cf2f3c;
+            box-shadow: 0 4px 16px rgba(230, 57, 70, 0.28);
+        }
+
+        .btn:active {
+            background: #b82835;
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid #ff858b;
+            outline-offset: 2px;
+        }
+
+        .btn.block {
+            width: 100%;
+            margin-top: 18px;
+        }
+
+        /* ========================================
+           INFO GRID
+           ======================================== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1px;
+            background: #2a2a2d;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #2a2a2d;
+        }
+
+        .info-cell {
+            background: #1c1c1e;
+            padding: 14px 18px;
+        }
+
+        .info-cell .k {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #7a7a80;
+            margin-bottom: 3px;
+        }
+
+        .info-cell .v {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #f0f0f2;
+            overflow-wrap: anywhere;
+        }
+
+        /* Full-width cells */
+        .info-cell.wide {
+            grid-column: 1 / -1;
+        }
+
+        /* ========================================
+           STATUS BADGE
+           ======================================== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .badge.in {
+            background: rgba(46, 204, 113, 0.12);
+            color: #6ee7a0;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .badge.in::before {
+            background: #6ee7a0;
+            box-shadow: 0 0 6px #6ee7a0;
+        }
+
+        .badge.out {
+            background: rgba(230, 57, 70, 0.12);
+            color: #ff858b;
+            border: 1px solid rgba(230, 57, 70, 0.3);
+        }
+
+        .badge.out::before {
+            background: #ff858b;
+        }
+
+        /* ========================================
+           EMPTY / NOT FOUND STATE
+           ======================================== */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 30px;
+            min-height: 220px;
+        }
+
+        .empty-state .icon {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.25);
+            color: #ff858b;
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #8a8a90;
+            margin: 0;
+            max-width: 320px;
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 900px) {
+            .content-grid.has-result {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 14px 20px;
+            }
+
+            .topbar-sub {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 22px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-row .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="topbar-brand">
+                ST.<span>FITTER</span>
+                <span class="topbar-sub">Member Search</span>
+            </div>
+            <a href="/userIndex" class="topbar-back">← Back to Home</a>
+        </header>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <div class="page-heading">
+                <h1>Search Member</h1>
+                <p>Look up a member by their ID to view details and manage check-in.</p>
+            </div>
+
+            <div class="content-grid <%= (typeof searched !== 'undefined' && searched) ? 'has-result' : '' %>">
+
+                <!-- SEARCH PANEL -->
+                <section class="panel">
+                    <div class="panel-head">
+                        <h2>Member Lookup</h2>
+                    </div>
+                    <div class="panel-body">
+                        <form action="/member/search" method="GET">
+                            <label class="field-label" for="memberId">Enter Member ID</label>
+                            <div class="search-row">
+                                <input type="text" id="memberId" name="id" placeholder="e.g. 10234" required>
+                                <button type="submit" class="btn">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <% if (typeof searched !=='undefined' && searched && data) { %>
+
+                    <!-- MEMBER INFO PANEL -->
+                    <section class="panel">
+                        <div class="panel-head">
+                            <h2>Member Information</h2>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="info-grid">
+                                <div class="info-cell">
+                                    <span class="k">Member ID</span>
+                                    <span class="v">
+                                        <%= data.id %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Check-in Status</span>
+                                    <span class="v">
+                                        <% if (checkedIn) { %>
+                                            <span class="badge in">Checked In</span>
+                                            <% } else { %>
+                                                <span class="badge out">Not Checked In</span>
+                                                <% } %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">First Name</span>
+                                    <span class="v">
+                                        <%= data.firstname %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Last Name</span>
+                                    <span class="v">
+                                        <%= data.lastname %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Age</span>
+                                    <span class="v">
+                                        <%= data.age %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Contact</span>
+                                    <span class="v">
+                                        <%= data.contact %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Membership Months</span>
+                                    <span class="v">
+                                        <%= data.months_avail %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Payment Status</span>
+                                    <span class="v">
+                                        <%= data.payment_status %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Available Date</span>
+                                    <span class="v">
+                                        <%= data.avail_date %>
+                                    </span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="k">Expiry Date</span>
+                                    <span class="v">
+                                        <%= data.expire_date %>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <% if (!checkedIn) { %>
+                                <form action="/checkin/<%= data.id %>" method="POST">
+                                    <button type="submit" class="btn block">Check In Member</button>
+                                </form>
+                                <% } %>
+
+                        </div>
+                    </section>
+
+                    <% } else if (typeof searched !=='undefined' && searched && !data) { %>
+
+                        <!-- NOT FOUND PANEL -->
+                        <section class="panel">
+                            <div class="panel-head">
+                                <h2>Result</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div class="empty-state">
+                                    <div class="icon">🔍</div>
+                                    <h3>Member Not Found</h3>
+                                    <p>We couldn't find a member with that ID. Please check the number and try again.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <% } else { %>
+
+                            <!-- INITIAL EMPTY STATE -->
+                            <section class="panel">
+                                <div class="panel-head">
+                                    <h2>Result</h2>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="empty-state">
+                                        <div class="icon">👤</div>
+                                        <h3>No Member Selected</h3>
+                                        <p>Enter a member ID above to view their information and check-in status.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <% } %>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

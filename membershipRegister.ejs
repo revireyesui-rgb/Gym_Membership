@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Membership Registration | ST.FITTER GYM</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(230, 57, 70, 0.12), transparent 35%),
+                #1a1a1a;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .member-card {
+            width: 100%;
+            max-width: 520px;
+            background: #232323;
+            border: 1px solid #353535;
+            border-top: 4px solid #e63946;
+            border-radius: 6px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand h1 {
+            color: #fff;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .brand h1 span {
+            color: #e63946;
+        }
+
+        .brand p {
+            color: #888;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 7px;
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 0 0 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #353535;
+        }
+
+        .info-notice {
+            background: rgba(230, 57, 70, 0.08);
+            border-left: 3px solid #e63946;
+            border-radius: 3px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-notice p {
+            margin: 0 0 6px;
+            font-size: 13px;
+            color: #e8e8e8;
+        }
+
+        .info-notice p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-notice .highlight {
+            color: #ff6b74;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #f0f0f0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="email"],
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-radius: 3px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .payment-option {
+            position: relative;
+        }
+
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .payment-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            border-radius: 3px;
+            color: #cfcfcf;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+
+        .payment-option input[type="radio"]:checked+label {
+            background: rgba(230, 57, 70, 0.12);
+            border-color: #e63946;
+            color: #fff;
+            box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.15);
+        }
+
+        .qr-panel {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: #1a1a1a;
+            border: 1px dashed #e63946;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .qr-panel.visible {
+            display: block;
+        }
+
+        .qr-panel .qr-title {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+        }
+
+        .qr-panel img {
+            width: 180px;
+            height: 180px;
+            max-width: 100%;
+            background: #fff;
+            border-radius: 4px;
+            padding: 6px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .qr-panel .qr-note {
+            display: block;
+            margin-top: 10px;
+            color: #999;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .qr-panel .qr-amount {
+            color: #ff6b74;
+            font-weight: 700;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px 20px;
+            background: #e63946;
+            color: #fff;
+            border: 1px solid #e63946;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #c92f3b;
+            border-color: #c92f3b;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            color: #e63946;
+        }
+
+        .error-msg {
+            background: rgba(230, 57, 70, 0.15);
+            border: 1px solid #e63946;
+            color: #ff9aa0;
+            padding: 12px 14px;
+            border-radius: 3px;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .member-card {
+                padding: 25px 20px;
+            }
+
+            .brand h1 {
+                font-size: 23px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="member-card">
+
+        <div class="brand">
+            <h1>ST.<span>FITTER</span></h1>
+            <p>Gym Membership System</p>
+        </div>
+
+        <h2 class="card-title">Online Membership Registration</h2>
+
+        <div class="info-notice">
+            <p> Pay online and skip the line. Staff will verify your payment and activate your membership.</p>
+            <p>Already a member? <a href="/member" style="color:#ff6b74;">Search your ID number here</a>.</p>
+        </div>
+
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="error-msg">
+                <%= error %>
+            </div>
+            <% } %>
+
+                <form action="/membership/register" method="POST">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fn">First Name</label>
+                            <input type="text" id="fn" name="fn" placeholder="Enter firstname" autocomplete="given-name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ln">Last Name</label>
+                            <input type="text" id="ln" name="ln" placeholder="Enter lastname" autocomplete="family-name"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="Enter age" min="1" max="120" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter email" autocomplete="email"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="text" id="contact" name="contact" placeholder="Enter contact number"
+                            inputmode="tel" autocomplete="tel" pattern="[0-9+\-\s()]{7,}"
+                            title="Enter a valid contact number (at least 7 digits)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Home Address</label>
+                        <input type="text" id="address" name="address" placeholder="Enter home address"
+                            autocomplete="street-address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="plan">Membership Plan</label>
+                        <select id="plan" name="plan" required>
+                            <option value="Monthly" data-amount="500">Monthly – ₱500</option>
+                            <option value="Quarterly" data-amount="1500">Quarterly – ₱1,500</option>
+                            <option value="Annual" data-amount="6000">Annual – ₱6,000</option>
+                        </select>
+                    </div>
+
+                    <!-- PAYMENT METHOD -->
+                    <div class="form-group">
+                        <label>Payment Method</label>
+
+                        <div class="payment-options">
+                            <div class="payment-option">
+                                <input type="radio" id="pay-gcash" name="payment_method" value="GCash" checked required>
+                                <label for="pay-gcash">📱 GCash</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="pay-maya" name="payment_method" value="Maya">
+                                <label for="pay-maya">💳 Maya</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="pay-bank" name="payment_method" value="GoTyme Bank">
+                                <label for="pay-bank">🏦 GoTyme Bank</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="pay-onsite" name="payment_method" value="On-site">
+                                <label for="pay-onsite">🏢 Pay On-site</label>
+                            </div>
+                        </div>
+
+                        <!-- QR CODE (shown for online methods) -->
+                        <div class="qr-panel" id="qrPanel">
+                            <p class="qr-title" id="qrTitle">Scan to Pay</p>
+                            <img id="qrImage" src="" alt="Payment QR code">
+                            <span class="qr-note">
+                                Scan using your <strong id="qrAppName">e-wallet</strong> app and pay
+                                <span class="qr-amount" id="qrAmount">₱500.00</span>.
+                                Then enter the reference number below.
+                            </span>
+                        </div>
+
+                        <div class="form-group" id="refGroup" style="margin-top:14px; display:none;">
+                            <label for="reference_no">Payment Reference Number</label>
+                            <input type="text" id="reference_no" name="reference_no"
+                                placeholder="Enter GCash/Maya/Bank reference number">
+                        </div>
+
+                        <span class="payment-hint" style="display:block;margin-top:8px;color:#777;font-size:11px;">
+                            Online payments are verified by staff before activation.
+                        </span>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Register &amp; Pay</button>
+
+                </form>
+
+                <a href="/userIndex" class="back-link">← Back to Home</a>
+
+    </div>
+
+    <script>
+        (function () {
+            var QR_CODES = {
+                'GCash': { image: '/images/qr-gcash.jpg', app: 'GCash' },
+                'Maya': { image: '/images/qr-gcash.jpg', app: 'Maya' },
+                'GoTyme Bank': { image: '/images/qr-bank.jpg', app: 'GoTyme Bank' }
+            };
+
+            var radios = document.querySelectorAll('input[name="payment_method"]');
+            var panel = document.getElementById('qrPanel');
+            var qrImage = document.getElementById('qrImage');
+            var qrTitle = document.getElementById('qrTitle');
+            var qrApp = document.getElementById('qrAppName');
+            var qrAmount = document.getElementById('qrAmount');
+            var refGroup = document.getElementById('refGroup');
+            var plan = document.getElementById('plan');
+
+            function currentAmount() {
+                var opt = plan.options[plan.selectedIndex];
+                return opt ? opt.getAttribute('data-amount') : '0';
+            }
+
+            function update() {
+                var selected = document.querySelector('input[name="payment_method"]:checked');
+                var method = selected ? selected.value : '';
+
+                var online = method && method !== 'On-site' && QR_CODES[method];
+
+                if (!online) {
+                    panel.classList.remove('visible');
+                    refGroup.style.display = 'none';
+                    qrImage.src = '';
+                    return;
+                }
+
+                var info = QR_CODES[method];
+                qrImage.src = info.image;
+                qrImage.alt = info.app + ' payment QR code';
+                qrTitle.textContent = 'Scan to Pay via ' + info.app;
+                qrApp.textContent = info.app;
+                qrAmount.textContent = '₱' + Number(currentAmount()).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+                panel.classList.add('visible');
+                refGroup.style.display = 'block';
+            }
+
+            radios.forEach(function (r) { r.addEventListener('change', update); });
+            plan.addEventListener('change', update);
+            update();
+        })();
+    </script>
+
+</body>
+
+</html>

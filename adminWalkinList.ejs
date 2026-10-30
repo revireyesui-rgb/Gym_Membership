@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Walk-in List</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminwalkin.css">
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="admin-header">
+        <h1>ST.<span>FITTER</span> GYM</h1>
+
+        <form action="/adminLogout" method="POST" onsubmit="return confirm('Are you sure you want to log out?');">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </header>
+
+    <main class="admin-container">
+        <h2 class="section-title">Admin Dashboard</h2>
+        <!-- NAVIGATION CARDS -->
+        <div class="dashboard-links">
+
+            <a href="/adminAttendanceList" class="dashboard-link">
+                Today's Attendance
+                <span>View today's gym attendance Regular</span>
+            </a>
+
+            <a href="/adminWalkinList" class="dashboard-link active">
+                Walk-in List
+                <span>View walk-in registration records</span>
+            </a>
+
+            <a href="/adminRegularMemberList" class="dashboard-link">
+                Regular Members
+                <span>View registered gym members</span>
+            </a>
+            <a href="/adminOnlineRegistrations" class="dashboard-link">
+                Online Registrations
+                <span>Verify &amp; activate online membership signups</span>
+            </a>
+
+        </div>
+
+        <!-- WALK-IN CONTENT -->
+        <section class="attendance-content">
+
+            <div class="attendance-heading">
+                <div>
+                    <h2>Today's Gym Walk-in List</h2>
+                    <p>View all walk-in registration records.</p>
+                </div>
+
+                <a href="/adminWalkinHistory" class="dashboard-button" role="button">
+                    Walk-in History
+                    <span>View previous walk-in records</span>
+                </a>
+            </div>
+
+            <div class="attendance-table-wrapper">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Walk-in ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Contact</th>
+                            <th>Payment Method</th>
+                            <th>Date and Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% if (walkins && walkins.length> 0) { %>
+
+                            <% walkins.forEach(function(walkin) { %>
+                                <tr>
+                                    <td data-label="Walk-in ID">
+                                        <%= walkin.id %>
+                                    </td>
+                                    <td data-label="First Name">
+                                        <%= walkin.firstname %>
+                                    </td>
+                                    <td data-label="Last Name">
+                                        <%= walkin.lastname %>
+                                    </td>
+                                    <td data-label="Age">
+                                        <%= walkin.age %>
+                                    </td>
+                                    <td data-label="Contact">
+                                        <%= walkin.contact || '' %>
+                                    </td>
+                                    <td data-label="Payment Method">
+                                        <%= walkin.payment_method || 'Cash' %>
+                                    </td>
+                                    <td data-label="Date and Time">
+                                        <%= walkin.visit_date ? new Date(walkin.visit_date).toLocaleString('en-PH')
+                                            : 'No date recorded' %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="7" class="empty-attendance">No walk-in records found.</td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
